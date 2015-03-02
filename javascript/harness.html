@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="harness.js"></script>
+<script src="notify.js"></script>
+<script>
+function log(str) {
+    var h = document.getElementById("logholder"),
+        e = document.getElementById("log"),
+        atbottom = h.scrollTop >= e.clientHeight - h.clientHeight - 10;
+    if (!/\n$/.test(str))
+        str += "\n";
+    e.innerText = e.innerText + str;
+    if (atbottom)
+        h.scrollTop = Math.max(Math.ceil(e.clientHeight - h.clientHeight), 0);
+}
+function pausebutton() {
+    var e = document.getElementById("pausebutton");
+    e.innerHTML = (run() ? "Pause" : "Continue");
+}
+function resize() {
+    var e = document.getElementById("logholder");
+    var ee = e, top = 0;
+    while (ee) {
+        top += ee.offsetTop;
+        ee = ee.offsetParent;
+    }
+    e.style.height = Math.max(200, window.innerHeight - top - 10) + "px";
+}
+window.addEventListener("resize", resize);
+</script>
+<style>
+#logholder {
+    overflow-y: scroll;
+    max-height: 60em;
+}
+#log {
+    background: #f0f0f0;
+    padding: 0.5em;
+    margin: 0;
+}
+div.buttons {
+    margin-bottom: 2em;
+}
+div.buttons button {
+    font-size: large;
+}
+</style>
+</head>
+<body>
+<div class="buttons">
+<button id="pausebutton" type="button" onclick="pausebutton()">Pause</button>
+</div>
+
+<div id="logholder"><pre id="log"></pre></div>
+<script>resize()</script>
+</body>
+</html>
